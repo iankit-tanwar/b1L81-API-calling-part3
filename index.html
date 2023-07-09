@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>b1L81 API calling part3</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+
+<body>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">An item</li>
+                        <li class="list-group-item">A second item</li>
+                        <li class="list-group-item">A third item</li>
+                        <li class="list-group-item">A fourth item</li>
+                       
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center my_spinner">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <button class="btn btn-sm btn-success m-3 my_todos">Todos</button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">title</th>
+                <th scope="col">price</th>
+                <th scope="col">category</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+        </tbody>
+    </table>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+
+
+    <script>
+
+        document.querySelector('.my_todos').addEventListener('click', function () {
+            //alert("okay sir");
+
+            fetch('https://fakestoreapi.com/products', {
+                method: "GET"
+
+            })
+                .then((res) => {
+                    res.json().then((data) => {
+                        console.log(data);
+                        var tr = '';
+                        data.forEach((Cv, index, arr) => {
+                            tr += ` <tr>
+                                        <td scope="row">${Cv.id}</td>
+                                        <td>${Cv.title}</td>
+                                        <td>${Cv.price}</td>
+                                        <td>${Cv.category}</td>
+                                        <td> 
+                                            <button class="btn btn-sm btn-success" onclick = "viewData(event)" data-bs-toggle="modal" data-bs-target="#exampleModal" >View</button>
+                                            <button class="btn btn-sm btn-primary">Edit</button>
+                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                            
+                                        </td>
+                                </tr>`
+
+
+                        });
+                        //console.log(tr);
+                        document.querySelector('.table > tbody').innerHTML = tr;
+                        document.querySelector('.my_spinner').remove();
+                    });
+
+
+
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+
+
+            viewData = (e) => {
+                //alert('okokok')
+
+                //  console.log(e.target.closest('tr').querySelector('th:first-child').innerHTML);
+
+                let id = e.target.closest('tr').querySelector('td:first-child').innerHTML;
+                let title = e.target.closest('tr').querySelector('td:nth-child(2)').innerHTML;
+                let price = e.target.closest('tr').querySelector('td:nth-child(3)').innerHTML;
+                let category = e.target.closest('tr').querySelector('td:nth-child(4)').innerHTML;
+
+                console.log(id);
+                console.log(title);
+                console.log(price);
+                console.log(category);
+
+
+                document.querySelector('.modal-body ul li:first-child').innerHTML = id;
+                document.querySelector('.modal-body ul li:nth-child(2)').innerHTML = title;
+                document.querySelector('.modal-body ul li:nth-child(3)').innerHTML = price;
+                document.querySelector('.modal-body ul li:nth-child(4)').innerHTML = category;
+
+
+
+
+            }
+
+
+        })
+
+    </script>
+</body>
+
+</html>
